@@ -7,11 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var background: ImageView
-    private lateinit var icon: ImageView
-    private lateinit var location: TextView
-    private lateinit var weather: TextView
-    private lateinit var temperature: TextView
 
 
 
@@ -19,11 +14,36 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        background = findViewById(R.id.background)
-        icon = findViewById(R.id.icon)
-        location = findViewById(R.id.location)
-        weather=findViewById(R.id.weather)
-        temperature=findViewById(R.id.temperature)
+        val background = findViewById<ImageView>(R.id.background)
+        val icon = findViewById<ImageView>(R.id.icon)
+        val location = findViewById<TextView>(R.id.location)
+        val weather = findViewById<TextView>(R.id.weather)
+        val temperature = findViewById<TextView>(R.id.temperature)
+
+        val dayOneIcon = findViewById<ImageView>(R.id.dayOneIcon)
+        val dayTwoIcon = findViewById<ImageView>(R.id.dayTwoIcon)
+        val dayThreeIcon = findViewById<ImageView>(R.id.dayThreeIcon)
+        val dayFourIcon = findViewById<ImageView>(R.id.dayFourIcon)
+        val dayFiveIcon = findViewById<ImageView>(R.id.dayFiveIcon)
+        val daySixIcon = findViewById<ImageView>(R.id.daySixIcon)
+        val daySevenIcon = findViewById<ImageView>(R.id.daySevenIcon)
+
+        val dayOneDate = findViewById<TextView>(R.id.dayOneDate)
+        val dayTwoDate = findViewById<TextView>(R.id.dayTwoDate)
+        val dayThreeDate = findViewById<TextView>(R.id.dayThreeDate)
+        val dayFourDate = findViewById<TextView>(R.id.dayFourDate)
+        val dayFiveDate = findViewById<TextView>(R.id.dayFiveDate)
+        val daySixDate = findViewById<TextView>(R.id.daySixDate)
+        val daySevenDate = findViewById<TextView>(R.id.daySevenDate)
+
+        val dayOneTemp = findViewById<TextView>(R.id.dayOneTemp)
+        val dayTwoTemp = findViewById<TextView>(R.id.dayTwoTemp)
+        val dayThreeTemp = findViewById<TextView>(R.id.dayThreeTemp)
+        val dayFourTemp = findViewById<TextView>(R.id.dayFourTemp)
+        val dayFiveTemp = findViewById<TextView>(R.id.dayFiveTemp)
+        val daySixTemp = findViewById<TextView>(R.id.daySixTemp)
+        val daySevenTemp = findViewById<TextView>(R.id.daySevenTemp)
+
 
 
 
@@ -35,6 +55,13 @@ class MainActivity : AppCompatActivity() {
         weather.setText("Rain")
         temperature.setText("50°")
 
+        dayTwoDate.setText("Thursday")
+        dayTwoIcon.setImageResource(R.drawable.storm)
+        dayTwoTemp.setText("70°")
+
+
+
 
     }
+
 }
