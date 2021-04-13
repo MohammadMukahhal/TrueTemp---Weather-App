@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                 val firstIcon = weather1.getString("icon")
                 val firstTemp = firstDay.getJSONObject("temp").getString("day")
                 findViewById<TextView>(R.id.dayOneTemp).text = firstTemp.substringBefore(".") + "°F"
-                findViewById<ImageView>(R.id.dayOneIcon).setImageResource(changeImageMini(firstIcon))
+                changeImageMini(firstIcon,0)
                 findViewById<TextView>(R.id.dayOneDate).text = dateList[0]
                 //Second day
                 val day2 =  jsonObjArray.getJSONObject(1)
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                 val icon2 = weather2.getString("icon")
                 val temp2 = day2.getJSONObject("temp").getString("day")
                 findViewById<TextView>(R.id.dayTwoTemp).text = temp2.substringBefore(".") + "°F"
-                findViewById<ImageView>(R.id.dayTwoIcon).setImageResource(changeImageMini(icon2))
+                changeImageMini(icon2,1)
                 findViewById<TextView>(R.id.dayTwoDate).text = dateList[1]
                 //Third day
                 val day3 =  jsonObjArray.getJSONObject(2)
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                 val icon3 = weather3.getString("icon")
                 val temp3 = day3.getJSONObject("temp").getString("day")
                 findViewById<TextView>(R.id.dayThreeTemp).text = temp3.substringBefore(".") + "°F"
-                findViewById<ImageView>(R.id.dayThreeIcon).setImageResource(changeImageMini(icon3))
+                changeImageMini(icon3,2)
                 findViewById<TextView>(R.id.dayThreeDate).text = dateList[2]
                 //Fourth day
                 val day4 =  jsonObjArray.getJSONObject(3)
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                 val icon4 = weather4.getString("icon")
                 val temp4 = day4.getJSONObject("temp").getString("day")
                 findViewById<TextView>(R.id.dayFourTemp).text = temp4.substringBefore(".") + "°F"
-                findViewById<ImageView>(R.id.dayFourIcon).setImageResource(changeImageMini(icon4))
+                changeImageMini(icon4,3)
                 findViewById<TextView>(R.id.dayFourDate).text = dateList[3]
                 //Fifth day
                 val day5 =  jsonObjArray.getJSONObject(4)
@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                 val icon5 = weather5.getString("icon")
                 val temp5 = day5.getJSONObject("temp").getString("day")
                 findViewById<TextView>(R.id.dayFiveTemp).text = temp5.substringBefore(".") + "°F"
-                findViewById<ImageView>(R.id.dayFiveIcon).setImageResource(changeImageMini(icon5))
+                changeImageMini(icon5,4)
                 findViewById<TextView>(R.id.dayFiveDate).text = dateList[4]
                 //Sixth day
                 val day6 =  jsonObjArray.getJSONObject(5)
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                 val icon6 = weather6.getString("icon")
                 val temp6 = day6.getJSONObject("temp").getString("day")
                 findViewById<TextView>(R.id.daySixTemp).text = temp6.substringBefore(".") + "°F"
-                findViewById<ImageView>(R.id.daySixIcon).setImageResource(changeImageMini(icon6))
+                changeImageMini(icon6,5)
                 findViewById<TextView>(R.id.daySixDate).text = dateList[5]
                 //Seventh day
                 val day7 =  jsonObjArray.getJSONObject(6)
@@ -164,33 +164,57 @@ class MainActivity : AppCompatActivity() {
                 val icon7 = weather7.getString("icon")
                 val temp7 = day7.getJSONObject("temp").getString("day")
                 findViewById<TextView>(R.id.daySevenTemp).text = temp7.substringBefore(".") + "°F"
-                findViewById<ImageView>(R.id.daySevenIcon).setImageResource(changeImageMini(icon7))
+                changeImageMini(icon7,6)
                 findViewById<TextView>(R.id.daySevenDate).text = dateList[6]
-
-
-
-
-
-
-            } catch (e: Exception) {
-
-            }
+            } catch (e: Exception) { }
         }
 
-        private fun changeImageMini(icon: String):Int {
-            val icon = " "
+        private fun changeImageMini(icon: String,index:Int) {
             if(icon == "01d" || icon == "02d" || icon == "01n" || icon == "02n"){
-                return R.drawable.sun
+                when (index) {
+                    1 -> findViewById<ImageView>(R.id.dayOneIcon).setImageResource(R.drawable.sun)
+                    2 -> findViewById<ImageView>(R.id.dayTwoIcon).setImageResource(R.drawable.sun)
+                    3 -> findViewById<ImageView>(R.id.dayThreeIcon).setImageResource(R.drawable.sun)
+                    4 -> findViewById<ImageView>(R.id.dayFourIcon).setImageResource(R.drawable.sun)
+                    5 -> findViewById<ImageView>(R.id.dayFiveIcon).setImageResource(R.drawable.sun)
+                    6 -> findViewById<ImageView>(R.id.daySixIcon).setImageResource(R.drawable.sun)
+                    7 -> findViewById<ImageView>(R.id.daySevenIcon).setImageResource(R.drawable.sun)
+                }
             }
             else if(icon == "09d" || icon == "10d" || icon == "09n" || icon == "10n") {
-                return (R.drawable.rainy)
+                when (index) {
+                    1 -> findViewById<ImageView>(R.id.dayOneIcon).setImageResource(R.drawable.rain)
+                    2 -> findViewById<ImageView>(R.id.dayTwoIcon).setImageResource(R.drawable.rain)
+                    3 -> findViewById<ImageView>(R.id.dayThreeIcon).setImageResource(R.drawable.rain)
+                    4 -> findViewById<ImageView>(R.id.dayFourIcon).setImageResource(R.drawable.rain)
+                    5 -> findViewById<ImageView>(R.id.dayFiveIcon).setImageResource(R.drawable.rain)
+                    6 -> findViewById<ImageView>(R.id.daySixIcon).setImageResource(R.drawable.rain)
+                    7 -> findViewById<ImageView>(R.id.daySevenIcon).setImageResource(R.drawable.rain)
+                }
             }
             else if(icon == "11d" || icon == "11n") {
-                return (R.drawable.storm)
+                when (index) {
+                    1 -> findViewById<ImageView>(R.id.dayOneIcon).setImageResource(R.drawable.storm)
+                    2 -> findViewById<ImageView>(R.id.dayTwoIcon).setImageResource(R.drawable.storm)
+                    3 -> findViewById<ImageView>(R.id.dayThreeIcon).setImageResource(R.drawable.storm)
+                    4 -> findViewById<ImageView>(R.id.dayFourIcon).setImageResource(R.drawable.storm)
+                    5 -> findViewById<ImageView>(R.id.dayFiveIcon).setImageResource(R.drawable.storm)
+                    6 -> findViewById<ImageView>(R.id.daySixIcon).setImageResource(R.drawable.storm)
+                    7 -> findViewById<ImageView>(R.id.daySevenIcon).setImageResource(R.drawable.storm)
+                }
             }
             else{
-                return (R.drawable.cloud)
+                when (index) {
+                    1 -> findViewById<ImageView>(R.id.dayOneIcon).setImageResource(R.drawable.cloud)
+                    2 -> findViewById<ImageView>(R.id.dayTwoIcon).setImageResource(R.drawable.cloud)
+                    3 -> findViewById<ImageView>(R.id.dayThreeIcon).setImageResource(R.drawable.cloud)
+                    4 -> findViewById<ImageView>(R.id.dayFourIcon).setImageResource(R.drawable.cloud)
+                    5 -> findViewById<ImageView>(R.id.dayFiveIcon).setImageResource(R.drawable.cloud)
+                    6 -> findViewById<ImageView>(R.id.daySixIcon).setImageResource(R.drawable.cloud)
+                    7 -> findViewById<ImageView>(R.id.daySevenIcon).setImageResource(R.drawable.cloud)
+                }
             }
+
         }
 
         private fun changeImage(icon: String) {
@@ -254,7 +278,6 @@ class MainActivity : AppCompatActivity() {
             }
             return listOf("MONDAY","TUESDAY","WEDNESDAY", "THURSDAY","FRIDAY","SATURDAY","SUNDAY")
         }
-
     }
 }
 
