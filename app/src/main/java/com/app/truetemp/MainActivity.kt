@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.os.AsyncTask
 import org.json.JSONObject
 import java.net.URL
+import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,25 +70,20 @@ class MainActivity : AppCompatActivity() {
         weatherTask().execute()
     }
     inner class weatherTask() : AsyncTask<String, Void, String>() {
-        var responseDaily: String? = null
         override fun onPreExecute() {
+
             super.onPreExecute()
 
         }
 
         override fun doInBackground(vararg params: String?): String? {
             var response: String?
-
             try {
-                response = URL("https://api.openweathermap.org/data/2.5/weather?q=$CITY&appid=$API").readText(
+                response = URL("https://api.openweathermap.org/data/2.5/onecall?lat=42.3223&lon=-83.1763&exclude=hourly,alerts,minutely&appid=$API&units=imperial").readText(
                         Charsets.UTF_8
-                )
-                responseDaily = URL("https://api.openweathermap.org/data/2.5/onecall?lat=42.3223&lon=-83.1763&exclude=hourly,minutely,alerts&appid=$API&units=metric").readText(
-                    Charsets.UTF_8
                 )
             } catch (e: Exception) {
                 response = null
-                responseDaily = null
             }
             return response
         }
@@ -97,32 +93,81 @@ class MainActivity : AppCompatActivity() {
             try {
                 /* Extracting JSON returns from the API */
                 val jsonObj = JSONObject(result)
-                val main = jsonObj.getJSONObject("main")
-                val sys = jsonObj.getJSONObject("sys")
-                val wind = jsonObj.getJSONObject("wind")
-                val weather = jsonObj.getJSONArray("weather").getJSONObject(0)
-                val updatedAt: Long = jsonObj.getLong("dt")
-                val updatedAtText = "Updated at: " + SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH).format(Date(updatedAt * 1000))
-                val temp = main.getString("temp")
-                val tempMin = "Min Temp: " + main.getString("temp_min")
-                val tempMax = "Max Temp: " + main.getString("temp_max")
-                val pressure = main.getString("pressure")
-                val humidity = main.getString("humidity")
-                val sunrise: Long = sys.getLong("sunrise")
-                val sunset: Long = sys.getLong("sunset")
-                val windSpeed = wind.getString("speed")
-                val weatherDescription = weather.getString("description")
-                val address = jsonObj.getString("name") + ", " + sys.getString("country")
+
+                val current = jsonObj.getJSONObject("current")
+
+                val weather = current.getJSONArray("weather").getJSONObject(0)
+                val temp = current.getString("temp")
+                val weatherDescription = weather.getString("main")
                 val icon = weather.getString("icon")
 
                 //Updating UI
                 findViewById<TextView>(R.id.weather).text = weatherDescription
-                findViewById<TextView>(R.id.location).text = address
-                //Calc temp
-                val tempF:Int = (((temp.toDouble() - 273.15) * 9/5 + 32).toInt())
-                findViewById<TextView>(R.id.temperature).text = tempF.toString() + "°F"
-
+                //Calc current temp
+                findViewById<TextView>(R.id.temperature).text = temp.substringBefore(".") + "°F"
                 changeImage(icon)
+
+                val dateList = makeDate()
+                //Calc 7 day temp
+                val jsonObjArray = JSONObject(result).getJSONArray("daily")
+                //First day
+                val firstDay =  jsonObjArray.getJSONObject(0)
+                val weather1 = firstDay.getJSONArray("weather").getJSONObject(0)
+                val firstIcon = weather1.getString("icon")
+                val firstTemp = firstDay.getJSONObject("temp").getString("day")
+                findViewById<TextView>(R.id.dayOneTemp).text = firstTemp.substringBefore(".") + "°F"
+                findViewById<ImageView>(R.id.dayOneIcon).setImageResource(changeImageMini(firstIcon))
+                findViewById<TextView>(R.id.dayOneDate).text = dateList[0]
+                //Second day
+                val day2 =  jsonObjArray.getJSONObject(1)
+                val weather2 = day2.getJSONArray("weather").getJSONObject(0)
+                val icon2 = weather2.getString("icon")
+                val temp2 = day2.getJSONObject("temp").getString("day")
+                findViewById<TextView>(R.id.dayTwoTemp).text = temp2.substringBefore(".") + "°F"
+                findViewById<ImageView>(R.id.dayTwoIcon).setImageResource(changeImageMini(icon2))
+                findViewById<TextView>(R.id.dayTwoDate).text = dateList[1]
+                //Third day
+                val day3 =  jsonObjArray.getJSONObject(2)
+                val weather3 = day3.getJSONArray("weather").getJSONObject(0)
+                val icon3 = weather3.getString("icon")
+                val temp3 = day3.getJSONObject("temp").getString("day")
+                findViewById<TextView>(R.id.dayThreeTemp).text = temp3.substringBefore(".") + "°F"
+                findViewById<ImageView>(R.id.dayThreeIcon).setImageResource(changeImageMini(icon3))
+                findViewById<TextView>(R.id.dayThreeDate).text = dateList[2]
+                //Fourth day
+                val day4 =  jsonObjArray.getJSONObject(3)
+                val weather4 = day4.getJSONArray("weather").getJSONObject(0)
+                val icon4 = weather4.getString("icon")
+                val temp4 = day4.getJSONObject("temp").getString("day")
+                findViewById<TextView>(R.id.dayFourTemp).text = temp4.substringBefore(".") + "°F"
+                findViewById<ImageView>(R.id.dayFourIcon).setImageResource(changeImageMini(icon4))
+                findViewById<TextView>(R.id.dayFourDate).text = dateList[3]
+                //Fifth day
+                val day5 =  jsonObjArray.getJSONObject(4)
+                val weather5 = day5.getJSONArray("weather").getJSONObject(0)
+                val icon5 = weather5.getString("icon")
+                val temp5 = day5.getJSONObject("temp").getString("day")
+                findViewById<TextView>(R.id.dayFiveTemp).text = temp5.substringBefore(".") + "°F"
+                findViewById<ImageView>(R.id.dayFiveIcon).setImageResource(changeImageMini(icon5))
+                findViewById<TextView>(R.id.dayFiveDate).text = dateList[4]
+                //Sixth day
+                val day6 =  jsonObjArray.getJSONObject(5)
+                val weather6 = day6.getJSONArray("weather").getJSONObject(0)
+                val icon6 = weather6.getString("icon")
+                val temp6 = day6.getJSONObject("temp").getString("day")
+                findViewById<TextView>(R.id.daySixTemp).text = temp6.substringBefore(".") + "°F"
+                findViewById<ImageView>(R.id.daySixIcon).setImageResource(changeImageMini(icon6))
+                findViewById<TextView>(R.id.daySixDate).text = dateList[5]
+                //Seventh day
+                val day7 =  jsonObjArray.getJSONObject(6)
+                val weather7 = day7.getJSONArray("weather").getJSONObject(0)
+                val icon7 = weather7.getString("icon")
+                val temp7 = day7.getJSONObject("temp").getString("day")
+                findViewById<TextView>(R.id.daySevenTemp).text = temp7.substringBefore(".") + "°F"
+                findViewById<ImageView>(R.id.daySevenIcon).setImageResource(changeImageMini(icon7))
+                findViewById<TextView>(R.id.daySevenDate).text = dateList[6]
+
+
 
 
 
@@ -132,16 +177,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        private fun changeImageMini(icon: String):Int {
+            val icon = " "
+            if(icon == "01d" || icon == "02d" || icon == "01n" || icon == "02n"){
+                return R.drawable.sun
+            }
+            else if(icon == "09d" || icon == "10d" || icon == "09n" || icon == "10n") {
+                return (R.drawable.rainy)
+            }
+            else if(icon == "11d" || icon == "11n") {
+                return (R.drawable.storm)
+            }
+            else{
+                return (R.drawable.cloud)
+            }
+        }
+
         private fun changeImage(icon: String) {
             val background = findViewById<ImageView>(R.id.background)
             val iconUI = findViewById<ImageView>(R.id.icon)
             //Set BG
             if(icon == "01d" || icon == "02d" || icon == "01n" || icon == "02n"){
-                background.setImageResource(R.drawable.sunnybg)
                 if(icon.get(2) == 'n') {
+                    background.setImageResource(R.drawable.nightbg)
                     iconUI.setImageResource(R.drawable.moon)
                 }
                 else {
+                    background.setImageResource(R.drawable.sunnybg)
                     iconUI.setImageResource(R.drawable.sun)
                 }
             }
@@ -156,16 +218,43 @@ class MainActivity : AppCompatActivity() {
             else{
                 background.setImageResource(R.drawable.nightbg)
                 if(icon.get(2) == 'n') {
+                    background.setImageResource(R.drawable.nightbg)
                     iconUI.setImageResource(R.drawable.moon)
                 }
                 else {
                     iconUI.setImageResource(R.drawable.cloud)
                 }
             }
-
-
-
         }
+
+        private fun makeDate():List<String>{
+            val calendar = Calendar.getInstance()
+            val day = calendar.get(Calendar.DAY_OF_WEEK)
+
+            if(day == 1){
+                return listOf("MONDAY","TUESDAY","WEDNESDAY", "THURSDAY","FRIDAY","SATURDAY","SUNDAY")
+            }
+            else if(day == 2){
+                return listOf("TUESDAY","WEDNESDAY", "THURSDAY","FRIDAY","SATURDAY","SUNDAY","MONDAY")
+            }
+            else if(day == 3){
+                return listOf("WEDNESDAY", "THURSDAY","FRIDAY","SATURDAY","SUNDAY","MONDAY","TUESDAY")
+            }
+            else if(day == 4){
+                return listOf("THURSDAY","FRIDAY","SATURDAY","SUNDAY","MONDAY","TUESDAY","WEDNESDAY")
+            }
+            else if(day == 5){
+                return listOf("FRIDAY","SATURDAY","SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY")
+            }
+            else if(day == 6){
+                return listOf("SATURDAY","SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY")
+            }
+            else if(day == 7){
+                return listOf("SUNDAY","SATURDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY")
+            }
+            return listOf("MONDAY","TUESDAY","WEDNESDAY", "THURSDAY","FRIDAY","SATURDAY","SUNDAY")
+        }
+
     }
 }
 
