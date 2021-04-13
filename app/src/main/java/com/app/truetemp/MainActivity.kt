@@ -22,51 +22,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Variables
-        val background = findViewById<ImageView>(R.id.background)
-        val icon = findViewById<ImageView>(R.id.icon)
-        val location = findViewById<TextView>(R.id.location)
-        val weather = findViewById<TextView>(R.id.weather)
-        val temperature = findViewById<TextView>(R.id.temperature)
-
-        val dayOneIcon = findViewById<ImageView>(R.id.dayOneIcon)
-        val dayTwoIcon = findViewById<ImageView>(R.id.dayTwoIcon)
-        val dayThreeIcon = findViewById<ImageView>(R.id.dayThreeIcon)
-        val dayFourIcon = findViewById<ImageView>(R.id.dayFourIcon)
-        val dayFiveIcon = findViewById<ImageView>(R.id.dayFiveIcon)
-        val daySixIcon = findViewById<ImageView>(R.id.daySixIcon)
-        val daySevenIcon = findViewById<ImageView>(R.id.daySevenIcon)
-
-        val dayOneDate = findViewById<TextView>(R.id.dayOneDate)
-        val dayTwoDate = findViewById<TextView>(R.id.dayTwoDate)
-        val dayThreeDate = findViewById<TextView>(R.id.dayThreeDate)
-        val dayFourDate = findViewById<TextView>(R.id.dayFourDate)
-        val dayFiveDate = findViewById<TextView>(R.id.dayFiveDate)
-        val daySixDate = findViewById<TextView>(R.id.daySixDate)
-        val daySevenDate = findViewById<TextView>(R.id.daySevenDate)
-
-        val dayOneTemp = findViewById<TextView>(R.id.dayOneTemp)
-        val dayTwoTemp = findViewById<TextView>(R.id.dayTwoTemp)
-        val dayThreeTemp = findViewById<TextView>(R.id.dayThreeTemp)
-        val dayFourTemp = findViewById<TextView>(R.id.dayFourTemp)
-        val dayFiveTemp = findViewById<TextView>(R.id.dayFiveTemp)
-        val daySixTemp = findViewById<TextView>(R.id.daySixTemp)
-        val daySevenTemp = findViewById<TextView>(R.id.daySevenTemp)
-
-        /*
-        //sample code
-        background.setImageResource(R.drawable.stormbg)
-        icon.setImageResource(R.drawable.rainy)
-        location.setText("Dearborn, MI")
-        weather.setText("Rain")
-        temperature.setText("50°")
-
-        dayTwoDate.setText("Thursday")
-        dayTwoIcon.setImageResource(R.drawable.storm)
-        dayTwoTemp.setText("70°")
-
-         */
-
         weatherTask().execute()
     }
     inner class weatherTask() : AsyncTask<String, Void, String>() {
@@ -79,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         override fun doInBackground(vararg params: String?): String? {
             var response: String?
             try {
-                response = URL("https://api.openweathermap.org/data/2.5/onecall?lat=42.3223&lon=-83.1763&exclude=hourly,alerts,minutely&appid=$API&units=imperial").readText(
+                response = URL("https://api.openweathermap.org/data/2.5/onecall?lat=42.32226&lon=-83.17631&exclude=hourly,alerts,minutely&appid=$API&units=imperial").readText(
                         Charsets.UTF_8
                 )
             } catch (e: Exception) {
@@ -114,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 val firstDay =  jsonObjArray.getJSONObject(0)
                 val weather1 = firstDay.getJSONArray("weather").getJSONObject(0)
                 val firstIcon = weather1.getString("icon")
-                val firstTemp = firstDay.getJSONObject("temp").getString("day")
+                val firstTemp = firstDay.getJSONObject("temp").getString("max")
                 findViewById<TextView>(R.id.dayOneTemp).text = firstTemp.substringBefore(".") + "°F"
                 changeImageMini(firstIcon,0)
                 findViewById<TextView>(R.id.dayOneDate).text = dateList[0]
@@ -122,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 val day2 =  jsonObjArray.getJSONObject(1)
                 val weather2 = day2.getJSONArray("weather").getJSONObject(0)
                 val icon2 = weather2.getString("icon")
-                val temp2 = day2.getJSONObject("temp").getString("day")
+                val temp2 = day2.getJSONObject("temp").getString("max")
                 findViewById<TextView>(R.id.dayTwoTemp).text = temp2.substringBefore(".") + "°F"
                 changeImageMini(icon2,1)
                 findViewById<TextView>(R.id.dayTwoDate).text = dateList[1]
@@ -130,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 val day3 =  jsonObjArray.getJSONObject(2)
                 val weather3 = day3.getJSONArray("weather").getJSONObject(0)
                 val icon3 = weather3.getString("icon")
-                val temp3 = day3.getJSONObject("temp").getString("day")
+                val temp3 = day3.getJSONObject("temp").getString("max")
                 findViewById<TextView>(R.id.dayThreeTemp).text = temp3.substringBefore(".") + "°F"
                 changeImageMini(icon3,2)
                 findViewById<TextView>(R.id.dayThreeDate).text = dateList[2]
@@ -138,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 val day4 =  jsonObjArray.getJSONObject(3)
                 val weather4 = day4.getJSONArray("weather").getJSONObject(0)
                 val icon4 = weather4.getString("icon")
-                val temp4 = day4.getJSONObject("temp").getString("day")
+                val temp4 = day4.getJSONObject("temp").getString("max")
                 findViewById<TextView>(R.id.dayFourTemp).text = temp4.substringBefore(".") + "°F"
                 changeImageMini(icon4,3)
                 findViewById<TextView>(R.id.dayFourDate).text = dateList[3]
@@ -146,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                 val day5 =  jsonObjArray.getJSONObject(4)
                 val weather5 = day5.getJSONArray("weather").getJSONObject(0)
                 val icon5 = weather5.getString("icon")
-                val temp5 = day5.getJSONObject("temp").getString("day")
+                val temp5 = day5.getJSONObject("temp").getString("max")
                 findViewById<TextView>(R.id.dayFiveTemp).text = temp5.substringBefore(".") + "°F"
                 changeImageMini(icon5,4)
                 findViewById<TextView>(R.id.dayFiveDate).text = dateList[4]
@@ -154,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                 val day6 =  jsonObjArray.getJSONObject(5)
                 val weather6 = day6.getJSONArray("weather").getJSONObject(0)
                 val icon6 = weather6.getString("icon")
-                val temp6 = day6.getJSONObject("temp").getString("day")
+                val temp6 = day6.getJSONObject("temp").getString("max")
                 findViewById<TextView>(R.id.daySixTemp).text = temp6.substringBefore(".") + "°F"
                 changeImageMini(icon6,5)
                 findViewById<TextView>(R.id.daySixDate).text = dateList[5]
@@ -162,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 val day7 =  jsonObjArray.getJSONObject(6)
                 val weather7 = day7.getJSONArray("weather").getJSONObject(0)
                 val icon7 = weather7.getString("icon")
-                val temp7 = day7.getJSONObject("temp").getString("day")
+                val temp7 = day7.getJSONObject("temp").getString("max")
                 findViewById<TextView>(R.id.daySevenTemp).text = temp7.substringBefore(".") + "°F"
                 changeImageMini(icon7,6)
                 findViewById<TextView>(R.id.daySevenDate).text = dateList[6]
